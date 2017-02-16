@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:divider="?android:attr/dividerHorizontal"
+    android:orientation="horizontal"
+    tools:context="com.example.tarunkukreja.weather.MainActivity">
+
+    <!--
+    This layout is a two-pane layout for the Items master/detail flow.
+    -->
+
+    <!-- the forecast fragment is a static fragment because it doe'nt need to be changed that's why we
+    declare android:name attribute-->
+
+    <fragment
+        android:id="@+id/fragment_forecast"
+        android:name="com.example.tarunkukreja.weather.ForecastFragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        tools:layout="@android:layout/list_content" />
+
+    <!-- the detail fragment is a dynamic fragment because it is changed every time a menu item is clicked that's why we
+    just use a FrameLayout which is the container of the detail fragment-->
+
+    <FrameLayout
+        android:id="@+id/weather_detail_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4" />
+
+</LinearLayout>

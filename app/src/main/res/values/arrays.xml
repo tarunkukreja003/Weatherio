@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="Temperature">
+        <item>@string/listPref_default_label</item>
+        <item>@string/listPref_imperial_label</item>
+    </string-array>
+
+    <string-array name="TemperatureValues">
+        <item>@string/listPref_default</item>
+        <item>@string/listPref_imperial</item>
+    </string-array>
+</resources>
