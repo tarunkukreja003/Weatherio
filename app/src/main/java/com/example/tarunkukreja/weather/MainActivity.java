@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
         else {
             Log.d(LOG_TAG, "detail fragment is null !!") ;
             mTwoPane = false ;
-            getSupportActionBar().setElevation(.5f);
+          //  getSupportActionBar().setElevation(.5f);
         }
 
         ForecastFragment forecastFragment = (ForecastFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_forecast) ;

@@ -25,14 +25,14 @@
             android:id="@+id/detail_dayText"
             android:text="Today"
             android:fontFamily="sans-serif-condensed"
-            android:textSize="24sp"
+            android:textSize="30sp"
             android:textStyle="bold"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
-        android:textSize="16sp"
+        android:textSize="24sp"
         android:id="@+id/detail_date_textView"
         android:text="24 June"/>
 
@@ -65,6 +65,7 @@
             android:fontFamily="sans-serif"
             android:text="18"
             android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
             />
 
             </LinearLayout>
@@ -80,11 +81,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/detail_image"
-                    android:src="@mipmap/ic_launcher1"/>
+                    android:src="@mipmap/ic_launcher1"
+                    android:layout_marginBottom="16dp"/>
 
                 <TextView
+                    android:fontFamily="sans-serif"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="30sp"
                     android:id="@+id/detail_description_text"
                     android:text="Clear"/>
 
@@ -97,24 +101,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/humidity_text"
-            android:textSize="22sp"
-            android:fontFamily="sans-serif-condensed"
+            android:textSize="24sp"
+            android:fontFamily="sans-serif"
             android:text="Humid" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/wind_text"
-            android:textSize="22sp"
-            android:fontFamily="sans-serif-condensed"
+            android:textSize="24sp"
+            android:fontFamily="sans-serif"
             android:text="Wind"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/pressure_text"
-            android:textSize="22sp"
-            android:fontFamily="sans-serif-condensed"
+            android:textSize="24sp"
+            android:fontFamily="sans-serif"
             android:text="Pressure"/>
 
 

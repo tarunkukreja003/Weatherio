@@ -8,13 +8,16 @@
     android:background="@drawable/touch_selector"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <FrameLayout
-        android:layout_width="60dp"
-        android:layout_height="wrap_content">
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/list_item_icon" />
+        android:id="@+id/list_item_icon"
+        android:layout_gravity="center_horizontal"
+        />
 
     </FrameLayout>
 
@@ -22,7 +25,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_weight="10">
+        android:layout_weight="7">
 
     <TextView
     android:layout_width="wrap_content"
@@ -46,6 +49,7 @@
         android:layout_weight="5">
 
     <TextView
+        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/list_item_high_textview"
@@ -53,6 +57,7 @@
         android:fontFamily="sans-serif-condensed"/>
 
         <TextView
+            android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/list_item_low_textview"
