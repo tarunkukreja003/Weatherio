@@ -94,6 +94,7 @@ public class ForecastAdapter extends CursorAdapter {
 
       //  TextView descTextView = (TextView)view.findViewById(R.id.list_item_forecast_textview) ;
         viewHolder.descTextView.setText(desc);
+        viewHolder.weatherIcon.setContentDescription(desc); // setting the description for visually blind people or those who have low vision
 
         boolean isMetric = Utility.isMetric(mContext) ;
 

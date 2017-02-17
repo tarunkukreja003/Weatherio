@@ -129,6 +129,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         windDetailText.setText(wind);
         weatherDetailImage.setImageResource(weatherIcon);
+        weatherDetailImage.setContentDescription(desc); // setting the description for visually blind people or those who have low vision
 
         // We still need this for the share intent
                     forecastData = String.format("%s - %s - %s/%s", dateView, desc, high, low);
