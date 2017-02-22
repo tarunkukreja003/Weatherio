@@ -50,6 +50,11 @@
             android:authorities="com.example.tarunkukreja.weather"
             android:name=".data.WeatherProvider"/>
 
+        <service android:name=".services.WeatherService" />
+
+        <receiver android:name=".services.WeatherService$AlarmReciever"
+            android:enabled="true"/>
+
     </application>
 
 </manifest>

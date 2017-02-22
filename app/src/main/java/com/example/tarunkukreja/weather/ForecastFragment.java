@@ -1,5 +1,9 @@
 package com.example.tarunkukreja.weather;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.tarunkukreja.weather.data.WeatherContract;
+import com.example.tarunkukreja.weather.services.WeatherService;
 
 /**
  * Created by tarunkukreja on 11/10/16.
@@ -197,11 +202,27 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     private void updateWeather(){
-        FetchWeatherTask fetchWeatherTask = new FetchWeatherTask(getActivity()) ;
+//        FetchWeatherTask fetchWeatherTask = new FetchWeatherTask(getActivity()) ;
+//
+//        String location = Utility.getPreferredLocation(getActivity());
+//
+//        fetchWeatherTask.execute(location) ;
 
-        String location = Utility.getPreferredLocation(getActivity());
+//        Intent serviceIntent = new Intent(getActivity(), WeatherService.class) ;
+//        serviceIntent.putExtra(WeatherService.LOCATION_QUERY_EXTRA,
+//                Utility.getPreferredLocation(getActivity()));
+//        getActivity().startService(serviceIntent) ;
 
-        fetchWeatherTask.execute(location) ;
+        Intent alarmIntent = new Intent(getActivity(), WeatherService.AlarmReciever.class) ;
+        alarmIntent.putExtra(WeatherService.LOCATION_QUERY_EXTRA,
+                Utility.getPreferredLocation(getActivity()));
+        // we use a pending intent with Alarm Manager to send intents at specific time
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, alarmIntent, PendingIntent.FLAG_ONE_SHOT) ;
+        // we have used FLAG_ONE_SHOT since we need to trigger the intent only once
+
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE) ;
+        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pendingIntent);
+        // RTC_WAKEUP triggers the Alarm Reciever and wakes up the device to fire pending intent at specified time
 
     }
 

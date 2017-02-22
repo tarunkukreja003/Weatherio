@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:padding="16dp"
     tools:context=".DetailFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp">
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight=".5">
 
         <TextView
             android:layout_width="wrap_content"
@@ -25,16 +20,24 @@
             android:id="@+id/detail_dayText"
             android:text="Today"
             android:fontFamily="sans-serif-condensed"
-            android:textSize="30sp"
+            android:textSize="48sp"
             android:textStyle="bold"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
-        android:textSize="24sp"
+        android:textSize="30sp"
         android:id="@+id/detail_date_textView"
-        android:text="24 June"/>
+        android:text="24 June" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,13 +58,13 @@
             android:id="@+id/fragment_high_textView"
             android:text="21"
             android:fontFamily="sans-serif"
-            android:textSize="96sp"/>
+            android:textSize="115sp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/fragment_low_textView"
-            android:textSize="48sp"
+            android:textSize="57sp"
             android:fontFamily="sans-serif"
             android:text="18"
             android:layout_marginBottom="16dp"
@@ -82,13 +85,14 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/detail_image"
                     android:src="@mipmap/ic_launcher1"
-                    android:layout_marginBottom="16dp"/>
+                    android:layout_marginBottom="16dp" />
 
                 <TextView
-                    android:fontFamily="sans-serif"
+                    android:fontFamily="sans-serif-condensed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="30sp"
+                    android:textSize="48sp"
+                    android:textStyle="bold"
                     android:id="@+id/detail_description_text"
                     android:text="Clear"/>
 
@@ -96,12 +100,20 @@
             </LinearLayout>
 
         </LinearLayout>
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight=".7"
+            android:gravity="center_vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/humidity_text"
-            android:textSize="24sp"
+            android:textSize="30sp"
             android:fontFamily="sans-serif"
             android:text="Humid" />
 
@@ -109,7 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/wind_text"
-            android:textSize="24sp"
+            android:textSize="30sp"
             android:fontFamily="sans-serif"
             android:text="Wind"/>
 
@@ -117,13 +129,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/pressure_text"
-            android:textSize="24sp"
+            android:textSize="30sp"
             android:fontFamily="sans-serif"
             android:text="Pressure"/>
+
+        </LinearLayout>
+       <FrameLayout
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+           android:layout_weight="0">
+
+           <com.example.tarunkukreja.weather.Compass
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:id="@+id/compass"
+               />
+       </FrameLayout>
 
 
     </LinearLayout>
 
 
-</LinearLayout>
-    </ScrollView>

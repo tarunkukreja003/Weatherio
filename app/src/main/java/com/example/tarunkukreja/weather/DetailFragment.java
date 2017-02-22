@@ -45,6 +45,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
 
     private static final String LOG_TAG = DetailFragment.class.getSimpleName() ;
+    private Compass mCompass ;
 
     ShareActionProvider mShareActionProvider ;
 
@@ -110,6 +111,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         float windDir = cursor.getFloat(COLUMN_WEATHER_DEGREES) ;
 
         String wind = Utility.getFormattedWind(getActivity(), windSpeed, windDir) ;
+//        mCompass.update(windDir);
 
 
         int weatherId = cursor.getInt(COLUMN_WEATHER_COND_ID) ;
@@ -193,6 +195,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         pressureDetailText = (TextView) rootView.findViewById(R.id.pressure_text);
         windDetailText = (TextView) rootView.findViewById(R.id.wind_text);
         descTextView = (TextView) rootView.findViewById(R.id.detail_description_text) ;
+        mCompass = (Compass) rootView.findViewById(R.id.compass) ;
 
         Bundle arguments = getArguments() ;
 
