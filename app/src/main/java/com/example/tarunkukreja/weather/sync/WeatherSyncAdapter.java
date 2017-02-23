@@ -330,6 +330,11 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                 cVVector.toArray(cVArray) ;
                 inserted =  getContext().getContentResolver().bulkInsert(WeatherContract.WeatherEntry.CONTENT_URI, cVArray) ;
 
+               // to delete the wetaher data from the database of previous days else it keeps on filling the phone's memory
+               getContext().getContentResolver().delete(WeatherContract.WeatherEntry.CONTENT_URI,
+                                             WeatherContract.WeatherEntry.COLUMN_DATE + " <= ?",
+                                            new String[] {Long.toString(dayTime.setJulianDay(julianStartDay-1))}) ;
+
 
                 notifyWeather();
 
