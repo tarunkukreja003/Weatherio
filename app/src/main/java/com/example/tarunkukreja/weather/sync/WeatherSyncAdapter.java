@@ -8,9 +8,11 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.format.Time;
 import android.util.Log;
@@ -38,8 +40,12 @@ import java.util.Vector;
 
 public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
 
-
     private final String LOG_TAG = WeatherSyncAdapter.class.getSimpleName() ;
+
+    private static final int SYNC_INTERVAL_SECONDS = 60 ;
+    private static final int SYNC_INTERVAL_MINUTES = 180 ;
+    private static final int SYNC_INTERVAL = SYNC_INTERVAL_SECONDS * SYNC_INTERVAL_MINUTES  ; // this is for verions below kit - kat
+    private static final int SYNC_FLEXTIME = SYNC_INTERVAL/3 ; // for versions above kit-kat
     public WeatherSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
     }
@@ -420,7 +426,61 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
              * here.
              */
 
+             onAccountCreated(newAccount, context);
         }
         return newAccount;
+    }
+
+    public static void configurePeriodicSync(Context context, int syncInterval, int flex_tiem){
+
+        String authority = context.getString(R.string.content_authority) ;
+
+        // if android version is above 19 then it performs auto sync once it is called but in lower versions it need
+        // to be called again by adding periodic sync
+
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
+
+            SyncRequest syncRequest = new SyncRequest.Builder()
+                    .syncPeriodic(syncInterval, flex_tiem)
+                    // flex_time = before seconds
+                    .setSyncAdapter(getSyncAccount(context), authority)
+                    .setExtras(new Bundle()).build() ;
+            ContentResolver.requestSync(syncRequest);
+        }
+        else {
+            ContentResolver.addPeriodicSync(getSyncAccount(context), authority, new Bundle(), syncInterval);
+        }
+
+    }
+
+
+
+    private static void onAccountCreated(Account newAccount, Context context) {
+
+        /*
+         * Since we've created an account
+         */
+
+        WeatherSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
+
+           /*
+         * Without calling setSyncAutomatically, our periodic sync will not be enabled.
+         */
+
+        ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.content_authority), true);
+
+        /*
+         * Finally, let's do a sync to get things started
+         */
+
+        syncImmediately(context);
+
+    }
+
+
+
+    public static void initializeSync(Context context) {
+
+         getSyncAccount(context) ;
     }
 }

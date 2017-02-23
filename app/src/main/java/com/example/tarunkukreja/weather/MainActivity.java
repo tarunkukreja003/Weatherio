@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.tarunkukreja.weather.sync.WeatherSyncAdapter;
+
 public class MainActivity extends AppCompatActivity implements ForecastFragment.Callback{
 
     /**
@@ -61,6 +63,9 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
 
         ForecastFragment forecastFragment = (ForecastFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_forecast) ;
         forecastFragment.setUseTodayLayout(!mTwoPane);
+
+        // start to sync
+        WeatherSyncAdapter.initializeSync(this);
 
         /* We do not need the following code anymore since Forecast fragment is a static fragment */
 
