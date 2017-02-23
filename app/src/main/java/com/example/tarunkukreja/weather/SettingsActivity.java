@@ -29,6 +29,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
                                                // TODO: Add preference
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_key_location))); // preferences are found by their keys
         bindPreferenceSummaryToValue(findPreference(getString(R.string.listPref_key)));
+       // bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_enable_notifications_key)));
     }
 
     private void bindPreferenceSummaryToValue(Preference preference){
@@ -47,6 +48,7 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
     public boolean onPreferenceChange(Preference preference, Object newValue) {
 
         ListPreference listPreference ;
+       // CheckBoxPreference checkBoxPreference ;
 
         String preferenceValue = newValue.toString() ;
 
@@ -65,6 +67,16 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
             }
 
         }
+//        else if(preference instanceof CheckBoxPreference){
+//
+//            checkBoxPreference = (CheckBoxPreference)preference ;
+//            if(checkBoxPreference.isChecked()){
+//                preference.setSummary(checkBoxPreference.getSummaryOn());
+//            }
+//            else {
+//                preference.setSummary(checkBoxPreference.getSummaryOff());
+//            }
+//        }
         else
         {  //For other preferences, set the summary to the value's simple string representation.
             preference.setSummary(preferenceValue);
