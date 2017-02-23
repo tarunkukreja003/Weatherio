@@ -99,8 +99,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         Boolean isMetric = Utility.isMetric(getActivity()) ;
         double high = cursor.getDouble(COL_WEATHER_MAX_TEMP);
         double low = cursor.getDouble(COL_WEATHER_MIN_TEMP) ;
-        String highStr = Utility.formatTemperature(getActivity(), high, isMetric) ;
-        String lowStr = Utility.formatTemperature(getActivity(),low, isMetric) ;
+        String highStr = Utility.formatTemperature(getActivity(), high) ;
+        String lowStr = Utility.formatTemperature(getActivity(),low) ;
         String desc = cursor.getString(COL_WEATHER_DESC) ;
 
         float pressure = cursor.getFloat(COLUMN_WEATHER_PRESSURE) ;

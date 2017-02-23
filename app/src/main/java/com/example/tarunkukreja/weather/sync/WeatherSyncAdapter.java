@@ -2,22 +2,30 @@ package com.example.tarunkukreja.weather.sync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.text.format.Time;
 import android.util.Log;
 
 import com.example.tarunkukreja.weather.BuildConfig;
+import com.example.tarunkukreja.weather.MainActivity;
 import com.example.tarunkukreja.weather.R;
 import com.example.tarunkukreja.weather.Utility;
 import com.example.tarunkukreja.weather.data.WeatherContract;
@@ -34,6 +42,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Vector;
 
+import static com.example.tarunkukreja.weather.Utility.getPreferredLocation;
+
 /**
  * Created by tarunkukreja on 22/02/17.
  */
@@ -46,6 +56,28 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
     private static final int SYNC_INTERVAL_MINUTES = 180 ;
     private static final int SYNC_INTERVAL = SYNC_INTERVAL_SECONDS * SYNC_INTERVAL_MINUTES  ; // this is for verions below kit - kat
     private static final int SYNC_FLEXTIME = SYNC_INTERVAL/3 ; // for versions above kit-kat
+
+    // DAY_IN_MILLIS is the amount of milliseconds in a day
+    private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
+
+    //WEATHER_NOTIFICATION_ID is an id you create that is matched to your notification so that you can reuse it.
+    // If you reuse the notification ID, your application will post at most one notification.
+
+    private static final int WEATHER_NOTIFICATION_ID = 3004;
+
+    private static final String[] NOTIFY_WEATHER_PROJECTION = new String[]{
+        WeatherContract.WeatherEntry.COLUMN_WEATHER_ID,
+                WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
+                WeatherContract.WeatherEntry.COLUMN_MIN_TEMP,
+                WeatherContract.WeatherEntry.COLUMN_SHORT_DESC
+    } ;
+
+    private static final int INDEX_WEATHER_ID = 0 ;
+    private static final int INDEX_MAX_TEMP = 1;
+    private static final int INDEX_MIN_TEMP = 2 ;
+    private static final int INDEX_SHORT_DESC = 3 ;
+
+
     public WeatherSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
     }
@@ -67,7 +99,7 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
 //
 //    @Override
 //    protected void onHandleIntent(Intent intent) {
-       String locationQuery = Utility.getPreferredLocation(getContext()) ;
+       String locationQuery = getPreferredLocation(getContext()) ;
 
 
 
@@ -298,6 +330,8 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                 cVVector.toArray(cVArray) ;
                 inserted =  getContext().getContentResolver().bulkInsert(WeatherContract.WeatherEntry.CONTENT_URI, cVArray) ;
 
+                notifyWeather();
+
             }
 
             // Sort order:  Ascending, by date.
@@ -482,5 +516,74 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
     public static void initializeSync(Context context) {
 
          getSyncAccount(context) ;
+    }
+
+    public  void notifyWeather(){
+
+        Context context = getContext() ;
+
+        // get saved values from Shared Preferences
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context) ;
+        // this is the last notification , pref_last_notification is the key to access this
+        String lastNotificationKey = context.getString(R.string.pref_last_notification) ;
+        // we need to convert this into long since date is in long
+        long lastSync = sharedPreferences.getLong(lastNotificationKey, 0) ;
+
+        // if the sync happened more than one day ago then produce a notification
+        if(System.currentTimeMillis() - lastSync > DAY_IN_MILLIS){
+
+            String location = Utility.getPreferredLocation(context) ;
+
+            Uri notificationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(location, System.currentTimeMillis()) ;
+
+           // query the database to retrieve data from the database
+            Cursor cursor = context.getContentResolver().query(notificationUri, NOTIFY_WEATHER_PROJECTION, null, null, null) ;
+
+            if(cursor.moveToFirst()) {
+                int weatherId = cursor.getInt(INDEX_WEATHER_ID);
+                double high = cursor.getDouble(INDEX_MAX_TEMP);
+                double low = cursor.getDouble(INDEX_MIN_TEMP);
+                String desc = cursor.getString(INDEX_SHORT_DESC);
+
+               int iconId = Utility.getIconResourceForWeatherCondition(weatherId) ;
+
+                // Define the text of the forecast.
+                String contentText = String.format(context.getString(R.string.notification_format), desc,
+                              Utility.formatTemperature(context, high),
+                              Utility.formatTemperature(context, low));
+
+                String title = context.getString(R.string.app_name) ;
+
+                // building  notificationBuilder
+
+
+                Intent notificationIntent = new Intent(context, MainActivity.class) ;
+                TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(context) ;
+            //    taskStackBuilder.addParentStack(DetailActivty.class) ;
+                taskStackBuilder.addNextIntent(notificationIntent) ;
+                PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT) ;
+
+                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getContext())
+                .setContentTitle(title)
+                .setSmallIcon(iconId)
+                .setContentText(contentText)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent);
+
+
+
+
+                NotificationManager notificationManager = (NotificationManager)getContext().getSystemService(Context.NOTIFICATION_SERVICE) ;
+
+                notificationManager.notify(WEATHER_NOTIFICATION_ID,  notificationBuilder.build());
+                //refreshing last sync, adding the refreshed sync to Shared Preferences
+                SharedPreferences.Editor editor = sharedPreferences.edit() ;
+                editor.putLong(lastNotificationKey, System.currentTimeMillis()) ;
+                editor.apply();
+            }
+        }
+
+
+
     }
 }

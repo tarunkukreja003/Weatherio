@@ -54,5 +54,12 @@
     <string name="sync_account_type">weather.example.com</string>
     <string name="content_authority">com.example.tarunkukreja.weather</string>
 
+    <!-- Notification Format -->
+    <string name="notification_format">Forecast: <xliff:g id = "condition">%1$s</xliff:g> High: <xliff:g id="high">%2$s</xliff:g> Low: <xliff:g id="low">%3$s</xliff:g>
+    </string>
+
+    <!-- Strings related to Notification preference -->
+    <string name="pref_last_notification">last_notification</string>
+
 
 </resources>
